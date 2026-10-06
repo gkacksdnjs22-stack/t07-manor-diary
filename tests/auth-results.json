@@ -1,0 +1,1801 @@
+{
+  "synthetic": true,
+  "base": "http://127.0.0.1:5187",
+  "at": "2026-10-06T05:53:00.415Z",
+  "results": [
+    {
+      "name": "anonymous API denied",
+      "status": "PASS"
+    },
+    {
+      "name": "two accounts registered and duplicate rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "bcrypt salted password storage",
+      "status": "PASS"
+    },
+    {
+      "name": "identical login failure messages",
+      "status": "PASS"
+    },
+    {
+      "name": "each account creates its own records",
+      "status": "PASS"
+    },
+    {
+      "name": "bidirectional cross-account read/update/delete denied without side effects",
+      "status": "PASS"
+    },
+    {
+      "name": "forged owner in query/header/body ignored",
+      "status": "PASS"
+    },
+    {
+      "name": "cross-origin mutations denied",
+      "status": "PASS"
+    },
+    {
+      "name": "export includes only current account records",
+      "status": "PASS"
+    },
+    {
+      "name": "eight hour expiration checked by server",
+      "status": "PASS"
+    },
+    {
+      "name": "same URL/method/session denied after logout",
+      "status": "PASS"
+    },
+    {
+      "name": "password change revokes all old sessions",
+      "status": "PASS"
+    }
+  ],
+  "evidence": [
+    {
+      "request": {
+        "path": "/api/diary",
+        "method": "GET",
+        "cookie": null,
+        "body": null
+      },
+      "response": {
+        "status": 401,
+        "body": {
+          "error": "로그인이 필요합니다."
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/api/auth",
+        "method": "POST",
+        "cookie": null,
+        "body": {
+          "action": "register",
+          "email": "a-3ec1a1de-7dd2-44b0-a712-50a00b42410f@test.invalid",
+          "password": "[REDACTED]"
+        }
+      },
+      "response": {
+        "status": 201,
+        "body": {
+          "ok": true
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/api/auth",
+        "method": "POST",
+        "cookie": null,
+        "body": {
+          "action": "register",
+          "email": "b-3ec1a1de-7dd2-44b0-a712-50a00b42410f@test.invalid",
+          "password": "[REDACTED]"
+        }
+      },
+      "response": {
+        "status": 201,
+        "body": {
+          "ok": true
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/api/auth",
+        "method": "POST",
+        "cookie": null,
+        "body": {
+          "action": "register",
+          "email": "a-3ec1a1de-7dd2-44b0-a712-50a00b42410f@test.invalid",
+          "password": "[REDACTED]"
+        }
+      },
+      "response": {
+        "status": 409,
+        "body": {
+          "error": "가입할 수 없습니다. 입력 내용을 확인하거나 로그인해 주세요."
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/api/auth",
+        "method": "POST",
+        "cookie": null,
+        "body": {
+          "action": "login",
+          "email": "a-3ec1a1de-7dd2-44b0-a712-50a00b42410f@test.invalid",
+          "password": "[REDACTED]"
+        }
+      },
+      "response": {
+        "status": 401,
+        "body": {
+          "error": "이메일 또는 비밀번호가 올바르지 않습니다."
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/api/auth",
+        "method": "POST",
+        "cookie": null,
+        "body": {
+          "action": "login",
+          "email": "none-3ec1a1de-7dd2-44b0-a712-50a00b42410f@test.invalid",
+          "password": "[REDACTED]"
+        }
+      },
+      "response": {
+        "status": 401,
+        "body": {
+          "error": "이메일 또는 비밀번호가 올바르지 않습니다."
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/api/diary",
+        "method": "POST",
+        "cookie": "[REDACTED]",
+        "body": {
+          "action": "createPlan",
+          "title": "Synthetic plan 0",
+          "startDate": "2026-10-06",
+          "endDate": "2026-10-10",
+          "priority": 2,
+          "successCriteria": "Synthetic authentication test",
+          "estimatedMinutes": 30
+        }
+      },
+      "response": {
+        "status": 201,
+        "body": {
+          "id": "a20bc3d8-6482-4f77-83d6-51483fc455e9"
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/api/diary",
+        "method": "POST",
+        "cookie": "[REDACTED]",
+        "body": {
+          "action": "createTask",
+          "planId": "a20bc3d8-6482-4f77-83d6-51483fc455e9",
+          "title": "Synthetic task",
+          "dueDate": "2026-10-06",
+          "priority": 2,
+          "tags": "test",
+          "estimatedMinutes": 30
+        }
+      },
+      "response": {
+        "status": 201,
+        "body": {
+          "id": "f0a903d6-6c40-47cb-b58a-82ca4bb1c967"
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/api/diary",
+        "method": "POST",
+        "cookie": "[REDACTED]",
+        "body": {
+          "action": "createExecution",
+          "taskId": "f0a903d6-6c40-47cb-b58a-82ca4bb1c967",
+          "startAt": "2026-10-06T09:00:00+09:00",
+          "endAt": "2026-10-06T09:30:00+09:00",
+          "requestKey": "same-key",
+          "blockedReason": ""
+        }
+      },
+      "response": {
+        "status": 201,
+        "body": {
+          "id": "41219704-59fe-4adb-bdbb-a4d54d0567ac"
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/api/diary",
+        "method": "POST",
+        "cookie": "[REDACTED]",
+        "body": {
+          "action": "createReview",
+          "planId": "a20bc3d8-6482-4f77-83d6-51483fc455e9",
+          "startDate": "2026-10-06",
+          "endDate": "2026-10-06",
+          "improvement": "Synthetic"
+        }
+      },
+      "response": {
+        "status": 201,
+        "body": {
+          "id": "24d9d2a0-980a-47a4-befd-5f05b9cbea11"
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/api/diary",
+        "method": "POST",
+        "cookie": "[REDACTED]",
+        "body": {
+          "action": "createPlan",
+          "title": "Synthetic plan 1",
+          "startDate": "2026-10-06",
+          "endDate": "2026-10-10",
+          "priority": 2,
+          "successCriteria": "Synthetic authentication test",
+          "estimatedMinutes": 30
+        }
+      },
+      "response": {
+        "status": 201,
+        "body": {
+          "id": "18e584a6-0983-4149-a40c-dfe54695dd8c"
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/api/diary",
+        "method": "POST",
+        "cookie": "[REDACTED]",
+        "body": {
+          "action": "createTask",
+          "planId": "18e584a6-0983-4149-a40c-dfe54695dd8c",
+          "title": "Synthetic task",
+          "dueDate": "2026-10-06",
+          "priority": 2,
+          "tags": "test",
+          "estimatedMinutes": 30
+        }
+      },
+      "response": {
+        "status": 201,
+        "body": {
+          "id": "f1294d1b-7083-4baf-8e99-9b98fb5552f5"
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/api/diary",
+        "method": "POST",
+        "cookie": "[REDACTED]",
+        "body": {
+          "action": "createExecution",
+          "taskId": "f1294d1b-7083-4baf-8e99-9b98fb5552f5",
+          "startAt": "2026-10-06T09:00:00+09:00",
+          "endAt": "2026-10-06T09:30:00+09:00",
+          "requestKey": "same-key",
+          "blockedReason": ""
+        }
+      },
+      "response": {
+        "status": 201,
+        "body": {
+          "id": "b7e29857-b106-44be-bff0-7b6f8d0709ed"
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/api/diary",
+        "method": "POST",
+        "cookie": "[REDACTED]",
+        "body": {
+          "action": "createReview",
+          "planId": "18e584a6-0983-4149-a40c-dfe54695dd8c",
+          "startDate": "2026-10-06",
+          "endDate": "2026-10-06",
+          "improvement": "Synthetic"
+        }
+      },
+      "response": {
+        "status": 201,
+        "body": {
+          "id": "b74eee99-a0a6-4de1-9fa2-bdacb494eb5d"
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/api/diary",
+        "method": "GET",
+        "cookie": "[REDACTED]",
+        "body": null
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "plans": [
+            {
+              "id": "18e584a6-0983-4149-a40c-dfe54695dd8c",
+              "title": "Synthetic plan 1",
+              "startDate": "2026-10-06",
+              "endDate": "2026-10-10",
+              "priority": 2,
+              "successCriteria": "Synthetic authentication test",
+              "estimatedMinutes": 30,
+              "improvement": "",
+              "sourceReviewId": null,
+              "createdAt": "2026-10-06T05:52:57.339Z",
+              "version": 1,
+              "estimatedKnown": 1,
+              "deletedAt": null,
+              "ownerId": "1565d595-dd9f-4f84-89f4-352bbb6f46e1"
+            }
+          ],
+          "tasks": [
+            {
+              "id": "f1294d1b-7083-4baf-8e99-9b98fb5552f5",
+              "planId": "18e584a6-0983-4149-a40c-dfe54695dd8c",
+              "title": "Synthetic task",
+              "dueDate": "2026-10-06",
+              "priority": 2,
+              "tags": "test",
+              "estimatedMinutes": 30,
+              "status": "todo",
+              "completionCycle": 0,
+              "deletedAt": null,
+              "createdAt": "2026-10-06T05:52:57.356Z",
+              "version": 1,
+              "estimatedKnown": 1
+            }
+          ],
+          "executions": [
+            {
+              "id": "b7e29857-b106-44be-bff0-7b6f8d0709ed",
+              "taskId": "f1294d1b-7083-4baf-8e99-9b98fb5552f5",
+              "startAt": "2026-10-06T00:00:00.000Z",
+              "endAt": "2026-10-06T00:30:00.000Z",
+              "actualMinutes": 30,
+              "blockedReason": "",
+              "requestKey": "1565d595-dd9f-4f84-89f4-352bbb6f46e1:same-key",
+              "createdAt": "2026-10-06T05:52:57.390Z",
+              "title": "",
+              "ongoing": 0,
+              "actualKnown": 1,
+              "assets": "",
+              "schedule": ""
+            }
+          ],
+          "reviews": [
+            {
+              "id": "b74eee99-a0a6-4de1-9fa2-bdacb494eb5d",
+              "planId": "18e584a6-0983-4149-a40c-dfe54695dd8c",
+              "startDate": "2026-10-06",
+              "endDate": "2026-10-06",
+              "improvement": "Synthetic",
+              "createdAt": "2026-10-06T05:52:57.426Z"
+            }
+          ],
+          "planVersions": [
+            {
+              "id": "72d2daf0-a1e3-4970-bc91-7eada2c54cb9",
+              "planId": "18e584a6-0983-4149-a40c-dfe54695dd8c",
+              "version": 1,
+              "snapshot": "{\"id\":\"18e584a6-0983-4149-a40c-dfe54695dd8c\",\"title\":\"Synthetic plan 1\",\"startDate\":\"2026-10-06\",\"endDate\":\"2026-10-10\",\"priority\":2,\"successCriteria\":\"Synthetic authentication test\",\"estimatedMinutes\":30,\"estimatedKnown\":1,\"improvement\":\"\",\"sourceReviewId\":null,\"version\":1}",
+              "createdAt": "2026-10-06T05:52:57.339Z"
+            }
+          ],
+          "completions": [],
+          "today": "2026-10-06"
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/api/diary?table=plans&id=18e584a6-0983-4149-a40c-dfe54695dd8c",
+        "method": "GET",
+        "cookie": "[REDACTED]",
+        "body": null
+      },
+      "response": {
+        "status": 404,
+        "body": {
+          "error": "기록을 찾을 수 없습니다."
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/api/diary",
+        "method": "POST",
+        "cookie": "[REDACTED]",
+        "body": {
+          "action": "deletePlan",
+          "id": "18e584a6-0983-4149-a40c-dfe54695dd8c",
+          "improvement": "ATTACK"
+        }
+      },
+      "response": {
+        "status": 404,
+        "body": {
+          "error": "기록을 찾을 수 없습니다."
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/api/diary?table=tasks&id=f1294d1b-7083-4baf-8e99-9b98fb5552f5",
+        "method": "GET",
+        "cookie": "[REDACTED]",
+        "body": null
+      },
+      "response": {
+        "status": 404,
+        "body": {
+          "error": "기록을 찾을 수 없습니다."
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/api/diary",
+        "method": "POST",
+        "cookie": "[REDACTED]",
+        "body": {
+          "action": "deleteTask",
+          "id": "f1294d1b-7083-4baf-8e99-9b98fb5552f5",
+          "improvement": "ATTACK"
+        }
+      },
+      "response": {
+        "status": 404,
+        "body": {
+          "error": "기록을 찾을 수 없습니다."
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/api/diary?table=executions&id=b7e29857-b106-44be-bff0-7b6f8d0709ed",
+        "method": "GET",
+        "cookie": "[REDACTED]",
+        "body": null
+      },
+      "response": {
+        "status": 404,
+        "body": {
+          "error": "기록을 찾을 수 없습니다."
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/api/diary",
+        "method": "POST",
+        "cookie": "[REDACTED]",
+        "body": {
+          "action": "deleteExecution",
+          "id": "b7e29857-b106-44be-bff0-7b6f8d0709ed",
+          "improvement": "ATTACK"
+        }
+      },
+      "response": {
+        "status": 404,
+        "body": {
+          "error": "기록을 찾을 수 없습니다."
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/api/diary?table=reviews&id=b74eee99-a0a6-4de1-9fa2-bdacb494eb5d",
+        "method": "GET",
+        "cookie": "[REDACTED]",
+        "body": null
+      },
+      "response": {
+        "status": 404,
+        "body": {
+          "error": "기록을 찾을 수 없습니다."
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/api/diary",
+        "method": "POST",
+        "cookie": "[REDACTED]",
+        "body": {
+          "action": "updateReview",
+          "id": "b74eee99-a0a6-4de1-9fa2-bdacb494eb5d",
+          "improvement": "ATTACK"
+        }
+      },
+      "response": {
+        "status": 404,
+        "body": {
+          "error": "기록을 찾을 수 없습니다."
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/api/diary",
+        "method": "POST",
+        "cookie": "[REDACTED]",
+        "body": {
+          "action": "updateExecution",
+          "id": "b7e29857-b106-44be-bff0-7b6f8d0709ed",
+          "taskId": "f0a903d6-6c40-47cb-b58a-82ca4bb1c967",
+          "requestKey": "attack",
+          "startAt": "2026-10-06T09:00:00+09:00",
+          "endAt": "2026-10-06T09:30:00+09:00"
+        }
+      },
+      "response": {
+        "status": 404,
+        "body": {
+          "error": "기록을 찾을 수 없습니다."
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/api/diary",
+        "method": "GET",
+        "cookie": "[REDACTED]",
+        "body": null
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "plans": [
+            {
+              "id": "18e584a6-0983-4149-a40c-dfe54695dd8c",
+              "title": "Synthetic plan 1",
+              "startDate": "2026-10-06",
+              "endDate": "2026-10-10",
+              "priority": 2,
+              "successCriteria": "Synthetic authentication test",
+              "estimatedMinutes": 30,
+              "improvement": "",
+              "sourceReviewId": null,
+              "createdAt": "2026-10-06T05:52:57.339Z",
+              "version": 1,
+              "estimatedKnown": 1,
+              "deletedAt": null,
+              "ownerId": "1565d595-dd9f-4f84-89f4-352bbb6f46e1"
+            }
+          ],
+          "tasks": [
+            {
+              "id": "f1294d1b-7083-4baf-8e99-9b98fb5552f5",
+              "planId": "18e584a6-0983-4149-a40c-dfe54695dd8c",
+              "title": "Synthetic task",
+              "dueDate": "2026-10-06",
+              "priority": 2,
+              "tags": "test",
+              "estimatedMinutes": 30,
+              "status": "todo",
+              "completionCycle": 0,
+              "deletedAt": null,
+              "createdAt": "2026-10-06T05:52:57.356Z",
+              "version": 1,
+              "estimatedKnown": 1
+            }
+          ],
+          "executions": [
+            {
+              "id": "b7e29857-b106-44be-bff0-7b6f8d0709ed",
+              "taskId": "f1294d1b-7083-4baf-8e99-9b98fb5552f5",
+              "startAt": "2026-10-06T00:00:00.000Z",
+              "endAt": "2026-10-06T00:30:00.000Z",
+              "actualMinutes": 30,
+              "blockedReason": "",
+              "requestKey": "1565d595-dd9f-4f84-89f4-352bbb6f46e1:same-key",
+              "createdAt": "2026-10-06T05:52:57.390Z",
+              "title": "",
+              "ongoing": 0,
+              "actualKnown": 1,
+              "assets": "",
+              "schedule": ""
+            }
+          ],
+          "reviews": [
+            {
+              "id": "b74eee99-a0a6-4de1-9fa2-bdacb494eb5d",
+              "planId": "18e584a6-0983-4149-a40c-dfe54695dd8c",
+              "startDate": "2026-10-06",
+              "endDate": "2026-10-06",
+              "improvement": "Synthetic",
+              "createdAt": "2026-10-06T05:52:57.426Z"
+            }
+          ],
+          "planVersions": [
+            {
+              "id": "72d2daf0-a1e3-4970-bc91-7eada2c54cb9",
+              "planId": "18e584a6-0983-4149-a40c-dfe54695dd8c",
+              "version": 1,
+              "snapshot": "{\"id\":\"18e584a6-0983-4149-a40c-dfe54695dd8c\",\"title\":\"Synthetic plan 1\",\"startDate\":\"2026-10-06\",\"endDate\":\"2026-10-10\",\"priority\":2,\"successCriteria\":\"Synthetic authentication test\",\"estimatedMinutes\":30,\"estimatedKnown\":1,\"improvement\":\"\",\"sourceReviewId\":null,\"version\":1}",
+              "createdAt": "2026-10-06T05:52:57.339Z"
+            }
+          ],
+          "completions": [],
+          "today": "2026-10-06"
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/api/diary",
+        "method": "GET",
+        "cookie": "[REDACTED]",
+        "body": null
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "plans": [
+            {
+              "id": "a20bc3d8-6482-4f77-83d6-51483fc455e9",
+              "title": "Synthetic plan 0",
+              "startDate": "2026-10-06",
+              "endDate": "2026-10-10",
+              "priority": 2,
+              "successCriteria": "Synthetic authentication test",
+              "estimatedMinutes": 30,
+              "improvement": "",
+              "sourceReviewId": null,
+              "createdAt": "2026-10-06T05:52:57.238Z",
+              "version": 1,
+              "estimatedKnown": 1,
+              "deletedAt": null,
+              "ownerId": "7902cd7b-47d9-4d51-912c-fb8d24942b85"
+            }
+          ],
+          "tasks": [
+            {
+              "id": "f0a903d6-6c40-47cb-b58a-82ca4bb1c967",
+              "planId": "a20bc3d8-6482-4f77-83d6-51483fc455e9",
+              "title": "Synthetic task",
+              "dueDate": "2026-10-06",
+              "priority": 2,
+              "tags": "test",
+              "estimatedMinutes": 30,
+              "status": "todo",
+              "completionCycle": 0,
+              "deletedAt": null,
+              "createdAt": "2026-10-06T05:52:57.255Z",
+              "version": 1,
+              "estimatedKnown": 1
+            }
+          ],
+          "executions": [
+            {
+              "id": "41219704-59fe-4adb-bdbb-a4d54d0567ac",
+              "taskId": "f0a903d6-6c40-47cb-b58a-82ca4bb1c967",
+              "startAt": "2026-10-06T00:00:00.000Z",
+              "endAt": "2026-10-06T00:30:00.000Z",
+              "actualMinutes": 30,
+              "blockedReason": "",
+              "requestKey": "7902cd7b-47d9-4d51-912c-fb8d24942b85:same-key",
+              "createdAt": "2026-10-06T05:52:57.288Z",
+              "title": "",
+              "ongoing": 0,
+              "actualKnown": 1,
+              "assets": "",
+              "schedule": ""
+            }
+          ],
+          "reviews": [
+            {
+              "id": "24d9d2a0-980a-47a4-befd-5f05b9cbea11",
+              "planId": "a20bc3d8-6482-4f77-83d6-51483fc455e9",
+              "startDate": "2026-10-06",
+              "endDate": "2026-10-06",
+              "improvement": "Synthetic",
+              "createdAt": "2026-10-06T05:52:57.309Z"
+            }
+          ],
+          "planVersions": [
+            {
+              "id": "c96016bd-d55d-4fed-98fc-57500760ce03",
+              "planId": "a20bc3d8-6482-4f77-83d6-51483fc455e9",
+              "version": 1,
+              "snapshot": "{\"id\":\"a20bc3d8-6482-4f77-83d6-51483fc455e9\",\"title\":\"Synthetic plan 0\",\"startDate\":\"2026-10-06\",\"endDate\":\"2026-10-10\",\"priority\":2,\"successCriteria\":\"Synthetic authentication test\",\"estimatedMinutes\":30,\"estimatedKnown\":1,\"improvement\":\"\",\"sourceReviewId\":null,\"version\":1}",
+              "createdAt": "2026-10-06T05:52:57.238Z"
+            }
+          ],
+          "completions": [],
+          "today": "2026-10-06"
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/api/diary?table=plans&id=a20bc3d8-6482-4f77-83d6-51483fc455e9",
+        "method": "GET",
+        "cookie": "[REDACTED]",
+        "body": null
+      },
+      "response": {
+        "status": 404,
+        "body": {
+          "error": "기록을 찾을 수 없습니다."
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/api/diary",
+        "method": "POST",
+        "cookie": "[REDACTED]",
+        "body": {
+          "action": "deletePlan",
+          "id": "a20bc3d8-6482-4f77-83d6-51483fc455e9",
+          "improvement": "ATTACK"
+        }
+      },
+      "response": {
+        "status": 404,
+        "body": {
+          "error": "기록을 찾을 수 없습니다."
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/api/diary?table=tasks&id=f0a903d6-6c40-47cb-b58a-82ca4bb1c967",
+        "method": "GET",
+        "cookie": "[REDACTED]",
+        "body": null
+      },
+      "response": {
+        "status": 404,
+        "body": {
+          "error": "기록을 찾을 수 없습니다."
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/api/diary",
+        "method": "POST",
+        "cookie": "[REDACTED]",
+        "body": {
+          "action": "deleteTask",
+          "id": "f0a903d6-6c40-47cb-b58a-82ca4bb1c967",
+          "improvement": "ATTACK"
+        }
+      },
+      "response": {
+        "status": 404,
+        "body": {
+          "error": "기록을 찾을 수 없습니다."
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/api/diary?table=executions&id=41219704-59fe-4adb-bdbb-a4d54d0567ac",
+        "method": "GET",
+        "cookie": "[REDACTED]",
+        "body": null
+      },
+      "response": {
+        "status": 404,
+        "body": {
+          "error": "기록을 찾을 수 없습니다."
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/api/diary",
+        "method": "POST",
+        "cookie": "[REDACTED]",
+        "body": {
+          "action": "deleteExecution",
+          "id": "41219704-59fe-4adb-bdbb-a4d54d0567ac",
+          "improvement": "ATTACK"
+        }
+      },
+      "response": {
+        "status": 404,
+        "body": {
+          "error": "기록을 찾을 수 없습니다."
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/api/diary?table=reviews&id=24d9d2a0-980a-47a4-befd-5f05b9cbea11",
+        "method": "GET",
+        "cookie": "[REDACTED]",
+        "body": null
+      },
+      "response": {
+        "status": 404,
+        "body": {
+          "error": "기록을 찾을 수 없습니다."
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/api/diary",
+        "method": "POST",
+        "cookie": "[REDACTED]",
+        "body": {
+          "action": "updateReview",
+          "id": "24d9d2a0-980a-47a4-befd-5f05b9cbea11",
+          "improvement": "ATTACK"
+        }
+      },
+      "response": {
+        "status": 404,
+        "body": {
+          "error": "기록을 찾을 수 없습니다."
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/api/diary",
+        "method": "POST",
+        "cookie": "[REDACTED]",
+        "body": {
+          "action": "updateExecution",
+          "id": "41219704-59fe-4adb-bdbb-a4d54d0567ac",
+          "taskId": "f1294d1b-7083-4baf-8e99-9b98fb5552f5",
+          "requestKey": "attack",
+          "startAt": "2026-10-06T09:00:00+09:00",
+          "endAt": "2026-10-06T09:30:00+09:00"
+        }
+      },
+      "response": {
+        "status": 404,
+        "body": {
+          "error": "기록을 찾을 수 없습니다."
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/api/diary",
+        "method": "GET",
+        "cookie": "[REDACTED]",
+        "body": null
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "plans": [
+            {
+              "id": "a20bc3d8-6482-4f77-83d6-51483fc455e9",
+              "title": "Synthetic plan 0",
+              "startDate": "2026-10-06",
+              "endDate": "2026-10-10",
+              "priority": 2,
+              "successCriteria": "Synthetic authentication test",
+              "estimatedMinutes": 30,
+              "improvement": "",
+              "sourceReviewId": null,
+              "createdAt": "2026-10-06T05:52:57.238Z",
+              "version": 1,
+              "estimatedKnown": 1,
+              "deletedAt": null,
+              "ownerId": "7902cd7b-47d9-4d51-912c-fb8d24942b85"
+            }
+          ],
+          "tasks": [
+            {
+              "id": "f0a903d6-6c40-47cb-b58a-82ca4bb1c967",
+              "planId": "a20bc3d8-6482-4f77-83d6-51483fc455e9",
+              "title": "Synthetic task",
+              "dueDate": "2026-10-06",
+              "priority": 2,
+              "tags": "test",
+              "estimatedMinutes": 30,
+              "status": "todo",
+              "completionCycle": 0,
+              "deletedAt": null,
+              "createdAt": "2026-10-06T05:52:57.255Z",
+              "version": 1,
+              "estimatedKnown": 1
+            }
+          ],
+          "executions": [
+            {
+              "id": "41219704-59fe-4adb-bdbb-a4d54d0567ac",
+              "taskId": "f0a903d6-6c40-47cb-b58a-82ca4bb1c967",
+              "startAt": "2026-10-06T00:00:00.000Z",
+              "endAt": "2026-10-06T00:30:00.000Z",
+              "actualMinutes": 30,
+              "blockedReason": "",
+              "requestKey": "7902cd7b-47d9-4d51-912c-fb8d24942b85:same-key",
+              "createdAt": "2026-10-06T05:52:57.288Z",
+              "title": "",
+              "ongoing": 0,
+              "actualKnown": 1,
+              "assets": "",
+              "schedule": ""
+            }
+          ],
+          "reviews": [
+            {
+              "id": "24d9d2a0-980a-47a4-befd-5f05b9cbea11",
+              "planId": "a20bc3d8-6482-4f77-83d6-51483fc455e9",
+              "startDate": "2026-10-06",
+              "endDate": "2026-10-06",
+              "improvement": "Synthetic",
+              "createdAt": "2026-10-06T05:52:57.309Z"
+            }
+          ],
+          "planVersions": [
+            {
+              "id": "c96016bd-d55d-4fed-98fc-57500760ce03",
+              "planId": "a20bc3d8-6482-4f77-83d6-51483fc455e9",
+              "version": 1,
+              "snapshot": "{\"id\":\"a20bc3d8-6482-4f77-83d6-51483fc455e9\",\"title\":\"Synthetic plan 0\",\"startDate\":\"2026-10-06\",\"endDate\":\"2026-10-10\",\"priority\":2,\"successCriteria\":\"Synthetic authentication test\",\"estimatedMinutes\":30,\"estimatedKnown\":1,\"improvement\":\"\",\"sourceReviewId\":null,\"version\":1}",
+              "createdAt": "2026-10-06T05:52:57.238Z"
+            }
+          ],
+          "completions": [],
+          "today": "2026-10-06"
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/api/auth",
+        "method": "GET",
+        "cookie": "[REDACTED]",
+        "body": null
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "user": {
+            "id": "1565d595-dd9f-4f84-89f4-352bbb6f46e1",
+            "email": "b-3ec1a1de-7dd2-44b0-a712-50a00b42410f@test.invalid"
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/api/diary?userId=1565d595-dd9f-4f84-89f4-352bbb6f46e1",
+        "method": "GET",
+        "cookie": "[REDACTED]",
+        "body": null
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "plans": [
+            {
+              "id": "a20bc3d8-6482-4f77-83d6-51483fc455e9",
+              "title": "Synthetic plan 0",
+              "startDate": "2026-10-06",
+              "endDate": "2026-10-10",
+              "priority": 2,
+              "successCriteria": "Synthetic authentication test",
+              "estimatedMinutes": 30,
+              "improvement": "",
+              "sourceReviewId": null,
+              "createdAt": "2026-10-06T05:52:57.238Z",
+              "version": 1,
+              "estimatedKnown": 1,
+              "deletedAt": null,
+              "ownerId": "7902cd7b-47d9-4d51-912c-fb8d24942b85"
+            }
+          ],
+          "tasks": [
+            {
+              "id": "f0a903d6-6c40-47cb-b58a-82ca4bb1c967",
+              "planId": "a20bc3d8-6482-4f77-83d6-51483fc455e9",
+              "title": "Synthetic task",
+              "dueDate": "2026-10-06",
+              "priority": 2,
+              "tags": "test",
+              "estimatedMinutes": 30,
+              "status": "todo",
+              "completionCycle": 0,
+              "deletedAt": null,
+              "createdAt": "2026-10-06T05:52:57.255Z",
+              "version": 1,
+              "estimatedKnown": 1
+            }
+          ],
+          "executions": [
+            {
+              "id": "41219704-59fe-4adb-bdbb-a4d54d0567ac",
+              "taskId": "f0a903d6-6c40-47cb-b58a-82ca4bb1c967",
+              "startAt": "2026-10-06T00:00:00.000Z",
+              "endAt": "2026-10-06T00:30:00.000Z",
+              "actualMinutes": 30,
+              "blockedReason": "",
+              "requestKey": "7902cd7b-47d9-4d51-912c-fb8d24942b85:same-key",
+              "createdAt": "2026-10-06T05:52:57.288Z",
+              "title": "",
+              "ongoing": 0,
+              "actualKnown": 1,
+              "assets": "",
+              "schedule": ""
+            }
+          ],
+          "reviews": [
+            {
+              "id": "24d9d2a0-980a-47a4-befd-5f05b9cbea11",
+              "planId": "a20bc3d8-6482-4f77-83d6-51483fc455e9",
+              "startDate": "2026-10-06",
+              "endDate": "2026-10-06",
+              "improvement": "Synthetic",
+              "createdAt": "2026-10-06T05:52:57.309Z"
+            }
+          ],
+          "planVersions": [
+            {
+              "id": "c96016bd-d55d-4fed-98fc-57500760ce03",
+              "planId": "a20bc3d8-6482-4f77-83d6-51483fc455e9",
+              "version": 1,
+              "snapshot": "{\"id\":\"a20bc3d8-6482-4f77-83d6-51483fc455e9\",\"title\":\"Synthetic plan 0\",\"startDate\":\"2026-10-06\",\"endDate\":\"2026-10-10\",\"priority\":2,\"successCriteria\":\"Synthetic authentication test\",\"estimatedMinutes\":30,\"estimatedKnown\":1,\"improvement\":\"\",\"sourceReviewId\":null,\"version\":1}",
+              "createdAt": "2026-10-06T05:52:57.238Z"
+            }
+          ],
+          "completions": [],
+          "today": "2026-10-06"
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/api/diary",
+        "method": "POST",
+        "cookie": "[REDACTED]",
+        "body": {
+          "action": "createTask",
+          "ownerId": "1565d595-dd9f-4f84-89f4-352bbb6f46e1",
+          "userId": "1565d595-dd9f-4f84-89f4-352bbb6f46e1",
+          "planId": "18e584a6-0983-4149-a40c-dfe54695dd8c",
+          "title": "attack",
+          "dueDate": "2026-10-06",
+          "priority": 2,
+          "estimatedMinutes": 0
+        }
+      },
+      "response": {
+        "status": 404,
+        "body": {
+          "error": "기록을 찾을 수 없습니다."
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/api/auth",
+        "method": "GET",
+        "cookie": "[REDACTED]",
+        "body": null
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "user": {
+            "id": "7902cd7b-47d9-4d51-912c-fb8d24942b85",
+            "email": "a-3ec1a1de-7dd2-44b0-a712-50a00b42410f@test.invalid"
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/api/diary?userId=7902cd7b-47d9-4d51-912c-fb8d24942b85",
+        "method": "GET",
+        "cookie": "[REDACTED]",
+        "body": null
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "plans": [
+            {
+              "id": "18e584a6-0983-4149-a40c-dfe54695dd8c",
+              "title": "Synthetic plan 1",
+              "startDate": "2026-10-06",
+              "endDate": "2026-10-10",
+              "priority": 2,
+              "successCriteria": "Synthetic authentication test",
+              "estimatedMinutes": 30,
+              "improvement": "",
+              "sourceReviewId": null,
+              "createdAt": "2026-10-06T05:52:57.339Z",
+              "version": 1,
+              "estimatedKnown": 1,
+              "deletedAt": null,
+              "ownerId": "1565d595-dd9f-4f84-89f4-352bbb6f46e1"
+            }
+          ],
+          "tasks": [
+            {
+              "id": "f1294d1b-7083-4baf-8e99-9b98fb5552f5",
+              "planId": "18e584a6-0983-4149-a40c-dfe54695dd8c",
+              "title": "Synthetic task",
+              "dueDate": "2026-10-06",
+              "priority": 2,
+              "tags": "test",
+              "estimatedMinutes": 30,
+              "status": "todo",
+              "completionCycle": 0,
+              "deletedAt": null,
+              "createdAt": "2026-10-06T05:52:57.356Z",
+              "version": 1,
+              "estimatedKnown": 1
+            }
+          ],
+          "executions": [
+            {
+              "id": "b7e29857-b106-44be-bff0-7b6f8d0709ed",
+              "taskId": "f1294d1b-7083-4baf-8e99-9b98fb5552f5",
+              "startAt": "2026-10-06T00:00:00.000Z",
+              "endAt": "2026-10-06T00:30:00.000Z",
+              "actualMinutes": 30,
+              "blockedReason": "",
+              "requestKey": "1565d595-dd9f-4f84-89f4-352bbb6f46e1:same-key",
+              "createdAt": "2026-10-06T05:52:57.390Z",
+              "title": "",
+              "ongoing": 0,
+              "actualKnown": 1,
+              "assets": "",
+              "schedule": ""
+            }
+          ],
+          "reviews": [
+            {
+              "id": "b74eee99-a0a6-4de1-9fa2-bdacb494eb5d",
+              "planId": "18e584a6-0983-4149-a40c-dfe54695dd8c",
+              "startDate": "2026-10-06",
+              "endDate": "2026-10-06",
+              "improvement": "Synthetic",
+              "createdAt": "2026-10-06T05:52:57.426Z"
+            }
+          ],
+          "planVersions": [
+            {
+              "id": "72d2daf0-a1e3-4970-bc91-7eada2c54cb9",
+              "planId": "18e584a6-0983-4149-a40c-dfe54695dd8c",
+              "version": 1,
+              "snapshot": "{\"id\":\"18e584a6-0983-4149-a40c-dfe54695dd8c\",\"title\":\"Synthetic plan 1\",\"startDate\":\"2026-10-06\",\"endDate\":\"2026-10-10\",\"priority\":2,\"successCriteria\":\"Synthetic authentication test\",\"estimatedMinutes\":30,\"estimatedKnown\":1,\"improvement\":\"\",\"sourceReviewId\":null,\"version\":1}",
+              "createdAt": "2026-10-06T05:52:57.339Z"
+            }
+          ],
+          "completions": [],
+          "today": "2026-10-06"
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/api/diary",
+        "method": "POST",
+        "cookie": "[REDACTED]",
+        "body": {
+          "action": "createTask",
+          "ownerId": "7902cd7b-47d9-4d51-912c-fb8d24942b85",
+          "userId": "7902cd7b-47d9-4d51-912c-fb8d24942b85",
+          "planId": "a20bc3d8-6482-4f77-83d6-51483fc455e9",
+          "title": "attack",
+          "dueDate": "2026-10-06",
+          "priority": 2,
+          "estimatedMinutes": 0
+        }
+      },
+      "response": {
+        "status": 404,
+        "body": {
+          "error": "기록을 찾을 수 없습니다."
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/api/diary",
+        "method": "POST",
+        "cookie": "[REDACTED]",
+        "body": {
+          "action": "deletePlan",
+          "id": "a20bc3d8-6482-4f77-83d6-51483fc455e9"
+        }
+      },
+      "response": {
+        "status": 403,
+        "body": {
+          "message": "Forbidden"
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/api/account",
+        "method": "GET",
+        "cookie": "[REDACTED]",
+        "body": null
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "schemaVersion": 3,
+          "timeZone": "Asia/Seoul",
+          "unit": "minutes",
+          "exportedAt": "2026-10-06T05:52:58.286Z",
+          "plans": [
+            {
+              "id": "a20bc3d8-6482-4f77-83d6-51483fc455e9",
+              "title": "Synthetic plan 0",
+              "startDate": "2026-10-06",
+              "endDate": "2026-10-10",
+              "priority": 2,
+              "successCriteria": "Synthetic authentication test",
+              "estimatedMinutes": 30,
+              "improvement": "",
+              "sourceReviewId": null,
+              "createdAt": "2026-10-06T05:52:57.238Z",
+              "version": 1,
+              "estimatedKnown": 1,
+              "deletedAt": null,
+              "ownerId": "7902cd7b-47d9-4d51-912c-fb8d24942b85"
+            }
+          ],
+          "tasks": [
+            {
+              "id": "f0a903d6-6c40-47cb-b58a-82ca4bb1c967",
+              "planId": "a20bc3d8-6482-4f77-83d6-51483fc455e9",
+              "title": "Synthetic task",
+              "dueDate": "2026-10-06",
+              "priority": 2,
+              "tags": "test",
+              "estimatedMinutes": 30,
+              "status": "todo",
+              "completionCycle": 0,
+              "deletedAt": null,
+              "createdAt": "2026-10-06T05:52:57.255Z",
+              "version": 1,
+              "estimatedKnown": 1
+            }
+          ],
+          "executions": [
+            {
+              "id": "41219704-59fe-4adb-bdbb-a4d54d0567ac",
+              "taskId": "f0a903d6-6c40-47cb-b58a-82ca4bb1c967",
+              "startAt": "2026-10-06T00:00:00.000Z",
+              "endAt": "2026-10-06T00:30:00.000Z",
+              "actualMinutes": 30,
+              "blockedReason": "",
+              "requestKey": "7902cd7b-47d9-4d51-912c-fb8d24942b85:same-key",
+              "createdAt": "2026-10-06T05:52:57.288Z",
+              "title": "",
+              "ongoing": 0,
+              "actualKnown": 1,
+              "assets": "",
+              "schedule": ""
+            }
+          ],
+          "reviews": [
+            {
+              "id": "24d9d2a0-980a-47a4-befd-5f05b9cbea11",
+              "planId": "a20bc3d8-6482-4f77-83d6-51483fc455e9",
+              "startDate": "2026-10-06",
+              "endDate": "2026-10-06",
+              "improvement": "Synthetic",
+              "createdAt": "2026-10-06T05:52:57.309Z"
+            }
+          ],
+          "planVersions": [
+            {
+              "id": "c96016bd-d55d-4fed-98fc-57500760ce03",
+              "planId": "a20bc3d8-6482-4f77-83d6-51483fc455e9",
+              "version": 1,
+              "snapshot": "{\"id\":\"a20bc3d8-6482-4f77-83d6-51483fc455e9\",\"title\":\"Synthetic plan 0\",\"startDate\":\"2026-10-06\",\"endDate\":\"2026-10-10\",\"priority\":2,\"successCriteria\":\"Synthetic authentication test\",\"estimatedMinutes\":30,\"estimatedKnown\":1,\"improvement\":\"\",\"sourceReviewId\":null,\"version\":1}",
+              "createdAt": "2026-10-06T05:52:57.238Z"
+            }
+          ],
+          "completions": [],
+          "today": "2026-10-06"
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/api/auth",
+        "method": "GET",
+        "cookie": "[REDACTED]",
+        "body": null
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "user": {
+            "id": "1565d595-dd9f-4f84-89f4-352bbb6f46e1",
+            "email": "b-3ec1a1de-7dd2-44b0-a712-50a00b42410f@test.invalid"
+          }
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/api/diary",
+        "method": "GET",
+        "cookie": "[REDACTED]",
+        "body": null
+      },
+      "response": {
+        "status": 401,
+        "body": {
+          "error": "로그인이 필요합니다."
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/api/auth",
+        "method": "POST",
+        "cookie": null,
+        "body": {
+          "action": "login",
+          "email": "b-3ec1a1de-7dd2-44b0-a712-50a00b42410f@test.invalid",
+          "password": "[REDACTED]"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "ok": true
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/api/diary",
+        "method": "GET",
+        "cookie": "[REDACTED]",
+        "body": null
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "plans": [
+            {
+              "id": "a20bc3d8-6482-4f77-83d6-51483fc455e9",
+              "title": "Synthetic plan 0",
+              "startDate": "2026-10-06",
+              "endDate": "2026-10-10",
+              "priority": 2,
+              "successCriteria": "Synthetic authentication test",
+              "estimatedMinutes": 30,
+              "improvement": "",
+              "sourceReviewId": null,
+              "createdAt": "2026-10-06T05:52:57.238Z",
+              "version": 1,
+              "estimatedKnown": 1,
+              "deletedAt": null,
+              "ownerId": "7902cd7b-47d9-4d51-912c-fb8d24942b85"
+            }
+          ],
+          "tasks": [
+            {
+              "id": "f0a903d6-6c40-47cb-b58a-82ca4bb1c967",
+              "planId": "a20bc3d8-6482-4f77-83d6-51483fc455e9",
+              "title": "Synthetic task",
+              "dueDate": "2026-10-06",
+              "priority": 2,
+              "tags": "test",
+              "estimatedMinutes": 30,
+              "status": "todo",
+              "completionCycle": 0,
+              "deletedAt": null,
+              "createdAt": "2026-10-06T05:52:57.255Z",
+              "version": 1,
+              "estimatedKnown": 1
+            }
+          ],
+          "executions": [
+            {
+              "id": "41219704-59fe-4adb-bdbb-a4d54d0567ac",
+              "taskId": "f0a903d6-6c40-47cb-b58a-82ca4bb1c967",
+              "startAt": "2026-10-06T00:00:00.000Z",
+              "endAt": "2026-10-06T00:30:00.000Z",
+              "actualMinutes": 30,
+              "blockedReason": "",
+              "requestKey": "7902cd7b-47d9-4d51-912c-fb8d24942b85:same-key",
+              "createdAt": "2026-10-06T05:52:57.288Z",
+              "title": "",
+              "ongoing": 0,
+              "actualKnown": 1,
+              "assets": "",
+              "schedule": ""
+            }
+          ],
+          "reviews": [
+            {
+              "id": "24d9d2a0-980a-47a4-befd-5f05b9cbea11",
+              "planId": "a20bc3d8-6482-4f77-83d6-51483fc455e9",
+              "startDate": "2026-10-06",
+              "endDate": "2026-10-06",
+              "improvement": "Synthetic",
+              "createdAt": "2026-10-06T05:52:57.309Z"
+            }
+          ],
+          "planVersions": [
+            {
+              "id": "c96016bd-d55d-4fed-98fc-57500760ce03",
+              "planId": "a20bc3d8-6482-4f77-83d6-51483fc455e9",
+              "version": 1,
+              "snapshot": "{\"id\":\"a20bc3d8-6482-4f77-83d6-51483fc455e9\",\"title\":\"Synthetic plan 0\",\"startDate\":\"2026-10-06\",\"endDate\":\"2026-10-10\",\"priority\":2,\"successCriteria\":\"Synthetic authentication test\",\"estimatedMinutes\":30,\"estimatedKnown\":1,\"improvement\":\"\",\"sourceReviewId\":null,\"version\":1}",
+              "createdAt": "2026-10-06T05:52:57.238Z"
+            }
+          ],
+          "completions": [],
+          "today": "2026-10-06"
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/api/auth",
+        "method": "POST",
+        "cookie": "[REDACTED]",
+        "body": {
+          "action": "logout"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "ok": true
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/api/diary",
+        "method": "GET",
+        "cookie": "[REDACTED]",
+        "body": null
+      },
+      "response": {
+        "status": 401,
+        "body": {
+          "error": "로그인이 필요합니다."
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/api/auth",
+        "method": "POST",
+        "cookie": null,
+        "body": {
+          "action": "login",
+          "email": "a-3ec1a1de-7dd2-44b0-a712-50a00b42410f@test.invalid",
+          "password": "[REDACTED]"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "ok": true
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/api/auth",
+        "method": "POST",
+        "cookie": null,
+        "body": {
+          "action": "login",
+          "email": "a-3ec1a1de-7dd2-44b0-a712-50a00b42410f@test.invalid",
+          "password": "[REDACTED]"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "ok": true
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/api/auth",
+        "method": "POST",
+        "cookie": "[REDACTED]",
+        "body": {
+          "action": "changePassword",
+          "currentPassword": "[REDACTED]",
+          "password": "[REDACTED]"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "ok": true
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/api/diary",
+        "method": "GET",
+        "cookie": "[REDACTED]",
+        "body": null
+      },
+      "response": {
+        "status": 401,
+        "body": {
+          "error": "로그인이 필요합니다."
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/api/diary",
+        "method": "GET",
+        "cookie": "[REDACTED]",
+        "body": null
+      },
+      "response": {
+        "status": 401,
+        "body": {
+          "error": "로그인이 필요합니다."
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/api/auth",
+        "method": "POST",
+        "cookie": null,
+        "body": {
+          "action": "login",
+          "email": "a-3ec1a1de-7dd2-44b0-a712-50a00b42410f@test.invalid",
+          "password": "[REDACTED]"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "ok": true
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/api/diary",
+        "method": "GET",
+        "cookie": "[REDACTED]",
+        "body": null
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "plans": [
+            {
+              "id": "18e584a6-0983-4149-a40c-dfe54695dd8c",
+              "title": "Synthetic plan 1",
+              "startDate": "2026-10-06",
+              "endDate": "2026-10-10",
+              "priority": 2,
+              "successCriteria": "Synthetic authentication test",
+              "estimatedMinutes": 30,
+              "improvement": "",
+              "sourceReviewId": null,
+              "createdAt": "2026-10-06T05:52:57.339Z",
+              "version": 1,
+              "estimatedKnown": 1,
+              "deletedAt": null,
+              "ownerId": "1565d595-dd9f-4f84-89f4-352bbb6f46e1"
+            }
+          ],
+          "tasks": [
+            {
+              "id": "f1294d1b-7083-4baf-8e99-9b98fb5552f5",
+              "planId": "18e584a6-0983-4149-a40c-dfe54695dd8c",
+              "title": "Synthetic task",
+              "dueDate": "2026-10-06",
+              "priority": 2,
+              "tags": "test",
+              "estimatedMinutes": 30,
+              "status": "todo",
+              "completionCycle": 0,
+              "deletedAt": null,
+              "createdAt": "2026-10-06T05:52:57.356Z",
+              "version": 1,
+              "estimatedKnown": 1
+            }
+          ],
+          "executions": [
+            {
+              "id": "b7e29857-b106-44be-bff0-7b6f8d0709ed",
+              "taskId": "f1294d1b-7083-4baf-8e99-9b98fb5552f5",
+              "startAt": "2026-10-06T00:00:00.000Z",
+              "endAt": "2026-10-06T00:30:00.000Z",
+              "actualMinutes": 30,
+              "blockedReason": "",
+              "requestKey": "1565d595-dd9f-4f84-89f4-352bbb6f46e1:same-key",
+              "createdAt": "2026-10-06T05:52:57.390Z",
+              "title": "",
+              "ongoing": 0,
+              "actualKnown": 1,
+              "assets": "",
+              "schedule": ""
+            }
+          ],
+          "reviews": [
+            {
+              "id": "b74eee99-a0a6-4de1-9fa2-bdacb494eb5d",
+              "planId": "18e584a6-0983-4149-a40c-dfe54695dd8c",
+              "startDate": "2026-10-06",
+              "endDate": "2026-10-06",
+              "improvement": "Synthetic",
+              "createdAt": "2026-10-06T05:52:57.426Z"
+            }
+          ],
+          "planVersions": [
+            {
+              "id": "72d2daf0-a1e3-4970-bc91-7eada2c54cb9",
+              "planId": "18e584a6-0983-4149-a40c-dfe54695dd8c",
+              "version": 1,
+              "snapshot": "{\"id\":\"18e584a6-0983-4149-a40c-dfe54695dd8c\",\"title\":\"Synthetic plan 1\",\"startDate\":\"2026-10-06\",\"endDate\":\"2026-10-10\",\"priority\":2,\"successCriteria\":\"Synthetic authentication test\",\"estimatedMinutes\":30,\"estimatedKnown\":1,\"improvement\":\"\",\"sourceReviewId\":null,\"version\":1}",
+              "createdAt": "2026-10-06T05:52:57.339Z"
+            }
+          ],
+          "completions": [],
+          "today": "2026-10-06"
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/api/account",
+        "method": "POST",
+        "cookie": "[REDACTED]",
+        "body": {
+          "action": "deleteAccount",
+          "confirm": "내 계정 삭제",
+          "password": "[REDACTED]"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "ok": true
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/api/diary",
+        "method": "GET",
+        "cookie": "[REDACTED]",
+        "body": null
+      },
+      "response": {
+        "status": 401,
+        "body": {
+          "error": "로그인이 필요합니다."
+        }
+      }
+    },
+    {
+      "request": {
+        "path": "/api/diary",
+        "method": "GET",
+        "cookie": "[REDACTED]",
+        "body": null
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "plans": [
+            {
+              "id": "18e584a6-0983-4149-a40c-dfe54695dd8c",
+              "title": "Synthetic plan 1",
+              "startDate": "2026-10-06",
+              "endDate": "2026-10-10",
+              "priority": 2,
+              "successCriteria": "Synthetic authentication test",
+              "estimatedMinutes": 30,
+              "improvement": "",
+              "sourceReviewId": null,
+              "createdAt": "2026-10-06T05:52:57.339Z",
+              "version": 1,
+              "estimatedKnown": 1,
+              "deletedAt": null,
+              "ownerId": "1565d595-dd9f-4f84-89f4-352bbb6f46e1"
+            }
+          ],
+          "tasks": [
+            {
+              "id": "f1294d1b-7083-4baf-8e99-9b98fb5552f5",
+              "planId": "18e584a6-0983-4149-a40c-dfe54695dd8c",
+              "title": "Synthetic task",
+              "dueDate": "2026-10-06",
+              "priority": 2,
+              "tags": "test",
+              "estimatedMinutes": 30,
+              "status": "todo",
+              "completionCycle": 0,
+              "deletedAt": null,
+              "createdAt": "2026-10-06T05:52:57.356Z",
+              "version": 1,
+              "estimatedKnown": 1
+            }
+          ],
+          "executions": [
+            {
+              "id": "b7e29857-b106-44be-bff0-7b6f8d0709ed",
+              "taskId": "f1294d1b-7083-4baf-8e99-9b98fb5552f5",
+              "startAt": "2026-10-06T00:00:00.000Z",
+              "endAt": "2026-10-06T00:30:00.000Z",
+              "actualMinutes": 30,
+              "blockedReason": "",
+              "requestKey": "1565d595-dd9f-4f84-89f4-352bbb6f46e1:same-key",
+              "createdAt": "2026-10-06T05:52:57.390Z",
+              "title": "",
+              "ongoing": 0,
+              "actualKnown": 1,
+              "assets": "",
+              "schedule": ""
+            }
+          ],
+          "reviews": [
+            {
+              "id": "b74eee99-a0a6-4de1-9fa2-bdacb494eb5d",
+              "planId": "18e584a6-0983-4149-a40c-dfe54695dd8c",
+              "startDate": "2026-10-06",
+              "endDate": "2026-10-06",
+              "improvement": "Synthetic",
+              "createdAt": "2026-10-06T05:52:57.426Z"
+            }
+          ],
+          "planVersions": [
+            {
+              "id": "72d2daf0-a1e3-4970-bc91-7eada2c54cb9",
+              "planId": "18e584a6-0983-4149-a40c-dfe54695dd8c",
+              "version": 1,
+              "snapshot": "{\"id\":\"18e584a6-0983-4149-a40c-dfe54695dd8c\",\"title\":\"Synthetic plan 1\",\"startDate\":\"2026-10-06\",\"endDate\":\"2026-10-10\",\"priority\":2,\"successCriteria\":\"Synthetic authentication test\",\"estimatedMinutes\":30,\"estimatedKnown\":1,\"improvement\":\"\",\"sourceReviewId\":null,\"version\":1}",
+              "createdAt": "2026-10-06T05:52:57.339Z"
+            }
+          ],
+          "completions": [],
+          "today": "2026-10-06"
+        }
+      }
+    }
+  ]
+}

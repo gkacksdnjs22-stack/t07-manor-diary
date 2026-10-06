@@ -29,6 +29,13 @@
       "when": 1791248811055,
       "tag": "0003_light_chronomancer",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1791265780697,
+      "tag": "0004_typical_jazinda",
+      "breakpoints": true
     }
   ]
 }
