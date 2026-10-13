@@ -1,9 +1,10 @@
 import {rawDb} from '@/db/raw';
-import {AuthError,authJson,authFailure,currentUser,cookie,digest,newSession,password,passwordHash,passwordMatches,sameOrigin,sessionCookie} from '@/lib/auth';
+import {AuthError,authJson,authFailure,currentUser,cookie,digest,newSession,password,passwordHash,passwordMatches,sameOrigin,sessionCookie,hostedAuth} from '@/lib/auth';
 export const dynamic='force-dynamic';
 export async function GET(req:Request){try{return authJson({user:await currentUser(req)})}catch(e){return authFailure(e)}}
 export async function POST(req:Request){try{
  sameOrigin(req);const raw=await req.text();if(raw.length>4000)throw new AuthError('입력이 너무 깁니다.',400);let p:any;try{p=JSON.parse(raw)}catch{throw new AuthError('입력 형식을 확인해 주세요.',400)}const db=rawDb();
+ if(hostedAuth()){if(p.action==='logout'){await currentUser(req);return authJson({ok:true,redirect:'/signout-with-chatgpt?return_to=%2Flogin'})}throw new AuthError('공개 사이트에서는 ChatGPT 계정으로 로그인해 주세요.',400)}
  if(p.action==='logout'){const user=await currentUser(req);await db.prepare('DELETE FROM auth_sessions WHERE token_hash=? AND user_id=?').bind(await digest(cookie(req)),user.id).run();return authJson({ok:true},200,{'Set-Cookie':sessionCookie(req,'',0)})}
  if(p.action==='changePassword'){const user=await currentUser(req),row=await db.prepare('SELECT password_hash FROM users WHERE id=?').bind(user.id).first<any>();if(typeof p.currentPassword!=='string'||!await passwordMatches(p.currentPassword,row.password_hash))throw new AuthError('현재 비밀번호를 확인해 주세요.',400);const next=await passwordHash(password(p.password));await db.batch([db.prepare('UPDATE users SET password_hash=? WHERE id=?').bind(next,user.id),db.prepare('DELETE FROM auth_sessions WHERE user_id=?').bind(user.id)]);return authJson({ok:true},200,{'Set-Cookie':sessionCookie(req,'',0)})}
  if(!['register','login'].includes(p.action))throw new AuthError('지원하지 않는 동작입니다.',400);
