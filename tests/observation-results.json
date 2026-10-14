@@ -1,0 +1,43 @@
+{
+  "method": "retrospective reconstruction of recorded game-work goal bundles; NOT pre-fixed daily plan denominators",
+  "rows": [
+    {
+      "date": "2026-10-06",
+      "reconstructedGoals": 3,
+      "completedGoals": 2,
+      "rate": 66.66666666666667
+    },
+    {
+      "date": "2026-10-07",
+      "reconstructedGoals": 1,
+      "completedGoals": 0,
+      "rate": 0.0
+    },
+    {
+      "date": "2026-10-08",
+      "reconstructedGoals": 3,
+      "completedGoals": 2,
+      "rate": 66.66666666666667
+    },
+    {
+      "date": "2026-10-12",
+      "reconstructedGoals": 3,
+      "completedGoals": 2,
+      "rate": 66.66666666666667
+    },
+    {
+      "date": "2026-10-13",
+      "reconstructedGoals": 2,
+      "completedGoals": 2,
+      "rate": 100.0
+    }
+  ],
+  "totalGoals": 12,
+  "totalCompleted": 8,
+  "weightedRate": 66.66666666666667,
+  "dailyMean": 60,
+  "firstTwoMean": 33.333333333333336,
+  "lastThreeMean": 77.77777777777777,
+  "ruleChangeKST": "2026-10-07T13:27:09+09:00",
+  "prospectiveDailyDenominatorsVerified": false
+}

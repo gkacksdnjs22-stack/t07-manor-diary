@@ -1,0 +1,18 @@
+[
+  {
+    "identity": "owner",
+    "heading": "탈출게임 제작 일지",
+    "tabTitle": "탈출게임 제작 일지 · Plan Do See",
+    "pass": true
+  },
+  {
+    "identity": "other",
+    "heading": "내 작업 일지",
+    "tabTitle": "내 작업 일지 · Plan Do See",
+    "pass": true
+  },
+  {
+    "identity": "anonymous",
+    "pass": true
+  }
+]
