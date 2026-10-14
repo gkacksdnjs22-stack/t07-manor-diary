@@ -10,6 +10,7 @@ export async function digest(value:string){return Array.from(new Uint8Array(awai
 export function cookie(req:Request){return req.headers.get('Cookie')?.split(';').map(x=>x.trim()).find(x=>x.startsWith(COOKIE+'='))?.slice(COOKIE.length+1)||''}
 export function sessionCookie(req:Request,value:string,maxAge=SESSION_SECONDS){return `${COOKIE}=${value}; Path=/; HttpOnly; SameSite=Strict; Max-Age=${maxAge}${new URL(req.url).protocol==='https:'?'; Secure':''}`}
 export function hostedAuth(){return (env as any).DIARY_HOSTED_AUTH==='chatgpt'}
+export function isSiteOwnerEmail(email:string|null){const owner=(env as any).DIARY_OWNER_EMAIL;return typeof owner==='string'&&!!owner&&email?.trim().toLowerCase()===owner}
 export async function currentUser(req:Request){
  if(hostedAuth()){
   // Sites dispatch supplies verified identity; email alone from form input is never trusted.
